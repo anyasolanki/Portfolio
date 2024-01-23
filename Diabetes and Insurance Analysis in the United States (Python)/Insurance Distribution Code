@@ -1,0 +1,157 @@
+"""
+group8_code_insurance_distribution.py: this file contains the code for the insulin and insurance coverage bar plots.
+
+DS2500 Final Group Project
+6/22/2023
+Sana Ali, Michelle Pathrose, Anya Solanki, Shana Soyfer, Erica Yang
+
+"""
+import seaborn as sns
+import matplotlib.pyplot as plt
+import pandas as pd
+
+
+# function to read the csv files
+def read_data():
+    """
+    this method reads the Insulin_Price_by Country.csv file
+    into a pandas dataframe to clearly read the insulin prices
+    :return: return the csv files as dataframes.
+    """
+    insulin = pd.read_csv('Insulin_Price_by Country.csv')
+    insurance = pd.read_csv('NCHS-table-2023.csv')
+    return insulin, insurance
+
+
+# function to create a barplot of insulin prices in other countries vs US
+def insulin_barplot(insulin):
+    """
+    this method uses the insulin dataframe to generate a barplot showing
+    the cost of the different types of insulin in countries where
+    universal health care policies have been implemented, vs the U.S.
+    :param insulin: the Insulin_Price_by Country.csv file dataframe.
+    :return: a barplot.
+    """
+    plt.figure(figsize=(10, 7))
+    countries = ['US', 'UK', 'Chile', 'Switzerland', 'Canada', 'France', 'Germany',
+                 'Japan', 'Mexico']  # a list to filter the countries to plot
+    # a list to filter the types of insulin to plot
+    insulin_types = ['Total Cost', 'Human', 'Analog', 'RA', 'SA', 'IA', 'LA']
+
+    colors = sns.color_palette('bright', len(countries))
+
+    # initializing an empty list to store country names as legend labels
+    legend_labels = []
+
+    # filtering and cleaning up the csv insulin data
+    filtered_data = insulin[insulin['Country'].isin(countries)]
+    price = filtered_data[insulin_types].apply(
+        lambda x: pd.to_numeric(x.str.replace(',', '').str[1:])).max().max()
+
+    # adjusting plotted bar width
+    bar_num = len(insulin_types)
+    country_num = len(countries)
+    width = 0.85 / country_num
+
+    # iterating through the data to extract each price for each insulin type and country
+    for c, country in enumerate(countries):
+        c_values = filtered_data[filtered_data['Country'] == country]
+        p_values = c_values[insulin_types].apply(
+            lambda x: pd.to_numeric((x.str.replace(',', '').str[1:])).values[0])
+
+        # calculating the x-axis position of the plotted bars
+        x_axis_pos = [p + c * width for p in range(bar_num)]
+        plt.bar(x_axis_pos, p_values, width=width, color=colors[c])
+        legend_labels.append(country)
+
+    # labeling bar plot
+    plt.xlabel('Insulin Type')
+    plt.ylabel('Price USD ($)')
+    plt.title('Average Price per Standard Unit of Insulin by Type, 2018')
+    plt.legend(legend_labels)
+    plt.xticks([p + (country_num - 1) * width / 2 for p in range(bar_num)], insulin_types, ha='right')
+    plt.ylim(0, price * 1.1)
+
+    # adding a caption to display
+    plt.subplots_adjust(left=0.15)
+    caption = 'RA = Rapid-Acting Insulin, SA = Slow-Acting Insulin, IA = Intermediate-Acting Insulin ' \
+              '& LA = Long-Acting Insulin. This study is the focus of the cost burden of insulin in ' \
+              'the U.S, versus OECD countries. The relevance of this study is that the US primarily ' \
+              'uses private insurance (a multi-payer system), whereas in OECD countries it is primarily ' \
+              'public health insurance (with a single payer system) funded by government.'
+    plt.figtext(0.5, 0.01, caption, wrap=True, ha='center', fontsize=8)
+    plt.show()
+
+
+def insurance_barplot(insurance):
+    """
+    this method uses the insurance dataframe to generate a bar plot showing
+    the computed quarterly average distribution of US citizens (aged 18-64)
+    adult health coverage status from 2019-2022.
+    :param insurance: the NCHS-table-2023.csv data
+    :return: a barplot.
+    """
+    plt.figure(figsize=(10, 7))
+
+    # computing the average of the 4 quarters in each year from 2019-2022
+    years = [2019, 2020, 2021, 2022]
+    insurance_types = [
+        'Adults Uninsured',
+        'Adults with Public Health Insurance',
+        'Adults with Private Health Insurance'
+    ]
+    avgs = []  # initializing an empty list to store quarterly year averages
+
+    # iterating over the years list to the average percentage for each quarter in each year
+    for year in years:
+        year_data = insurance[insurance['Year'] == year]  # filtering the data for years
+        avgs.append(year_data[insurance_types].mean())
+
+    # making a specific range of x values
+    x = range(len(years))
+    labels = [
+        str(year) for year in years  # converting the years to string format
+    ]
+    colors = [
+        'blue',
+        'orange',
+        'green'
+    ]
+
+    # plotting the bar plot
+    bar_width = 0.2
+
+    # iterating to access index and value of each insurance type
+    for i, insurance_types in enumerate(insurance_types):
+        y = [avg[i] for avg in avgs]   # extract the avg %
+        plt.bar(x, y, width=bar_width, label=insurance_types, color=colors[i], alpha=0.7)
+        x = [val + bar_width for val in x]  # update x-values based on insurance type
+
+    # labeling the plot
+    plt.xlabel('Years')
+    plt.ylabel('Percentage')
+    plt.title('Average Distribution of US Citizen Health Insurance Coverage (aged 18-64), 2019-2022')
+    plt.xticks([val + bar_width for val in range(len(years))], labels)  # setting up the x-ticks
+    plt.grid(True, color='gray', linestyle='-', linewidth=0.5)  # adding a grid background
+
+    # creating a dictionary to map legend handles and labels
+    handles, labels = plt.gca().get_legend_handles_labels()
+    by_label = dict(zip(labels, handles))
+    plt.legend(by_label.values(), by_label.keys())
+
+    # adding a caption to display
+    caption = 'This plot shows the average distribution of health insurance coverage status for US citizens ' \
+              'from 2019 to 2022. The percentages represent the proportion of adults who are uninsured or have ' \
+              'public/private health insurance.'
+    plt.figtext(0.5, 0.01, caption, wrap=True, ha='center', fontsize=9)
+    plt.show()
+
+
+def main():
+    insulin, insurance = read_data()
+    insulin_barplot(insulin)
+    insurance_barplot(insurance)
+
+
+if __name__ == '__main__':
+    main()
