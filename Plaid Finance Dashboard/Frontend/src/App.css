@@ -1,0 +1,146 @@
+/* Reset full viewport */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+/* MAIN APP CONTAINER */
+.App {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  /* 🌤 LIGHT BACKGROUND */
+  background: linear-gradient(
+    to bottom right,
+    #ffffff,
+    #f3f5ff,
+    #eaf6ff
+  );
+
+  padding: 40px 16px;
+  box-sizing: border-box;
+}
+
+/* HEADER AREA */
+.app-header {
+  width: 100%;
+  max-width: 900px;
+  margin-bottom: 24px;
+  color: #0f172a;
+}
+
+.app-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.app-subtitle {
+  font-size: 14px;
+  color: #4b5563;
+  margin: 0;
+}
+
+/* CONTENT COLUMN — CENTERED */
+.content-column {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* CARD */
+.card {
+  width: 100%;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 22px 26px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  color: #111827;
+  box-sizing: border-box;
+}
+
+/* CARD HEADERS + BODY */
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.card-eyebrow {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #6b7280;
+  margin-bottom: 5px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.card-description {
+  font-size: 13px;
+  color: #6b7280;
+  margin: 6px 0 0;
+}
+
+.card-body-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-top: 10px;
+}
+
+.pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.pill-muted {
+  background: #f3f4f6;
+  color: #4b5563;
+}
+
+/* BUTTONS */
+.btn-primary {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: white;
+
+  background: linear-gradient(to right, #6366f1, #4f46e5);
+  box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+}
+
+.btn-ghost {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: white;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+}
+
+.btn-primary:disabled,
+.btn-ghost:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
