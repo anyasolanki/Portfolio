@@ -6,6 +6,11 @@
 - Backend: Node/Express on Render
 - Database: Neon Postgres
 - Plaid environment: Sandbox
+- Credentials:
+  - Phone Number: 415-555-0011
+  - Code: 123456
+  - username: user_good
+  - password: pass_good
 
 ### Stock Prediction and Analysis (Python)
 - Led the creation of a Python program that predicts stock prices, using live API and stock data.
