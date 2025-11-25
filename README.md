@@ -6,7 +6,7 @@
 - Backend: Node/Express on Render
 - Database: Neon Postgres
 - Plaid environment: Sandbox
-- Credentials:
+- Fake Credentials:
   - Phone Number: 415-555-0011
   - Code: 123456
   - username: user_good
